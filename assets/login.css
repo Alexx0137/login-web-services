@@ -18,12 +18,14 @@ body {
 
 h1 {
     font-weight: bold;
-    margin: 0 0 20px 0;
+    margin: 0;
 }
 
 h2 {
     text-align: center;
 }
+
+
 
 p {
     font-size: 14px;
@@ -69,6 +71,26 @@ button.ghost {
     background-color: transparent;
     border-color: #FFFFFF;
 }
+
+/* Estilos para el botón de registro */
+.button {
+    border-radius: 20px;
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    font-size: 12px;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+    background-color: transparent;
+}
+
+
+/* Estilos al hacer clic en el botón */
+.button:active {
+    transform: translateY(1px); /* Efecto de desplazamiento hacia abajo al hacer clic */
+}
+
 
 form {
     background-color: #FFFFFF;
@@ -249,4 +271,14 @@ footer i {
 footer a {
     color: #3c97bf;
     text-decoration: none;
+}
+
+.error {
+    color: red;
+    margin: 0;
+}
+
+.success {
+    color: green;
+    margin: 0;
 }

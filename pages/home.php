@@ -1,12 +1,16 @@
 <?php
 session_start();
 
-// Verificar si el usuario ha iniciado sesión
+// Verificar si el usuario está autenticado
 if (!isset($_SESSION['usuario'])) {
-    // Redireccionar al usuario a la página de inicio de sesión
+    // Si no está autenticado, redirigirlo al formulario de inicio de sesión
     header('Location: login.php');
     exit;
 }
+
+// Obtener el nombre y apellido del usuario de la sesión
+$nombreUsuario = $_SESSION['nombre'] ?? 'Usuario Desconocido';
+$apellidoUsuario = $_SESSION['apellido'] ?? 'Apellido Desconocido';
 ?>
 
 <!DOCTYPE html>
@@ -20,8 +24,11 @@ if (!isset($_SESSION['usuario'])) {
 <body>
 <div class="container">
     <h1>Autenticación satisfactoria!</h1>
-    <h2>Diseño y Desarrollo de Servicios Web - caso</h2>
+    <h2>Bienvenido, <?php echo htmlspecialchars($nombreUsuario) . ' ' . htmlspecialchars($apellidoUsuario); ?>!</h2>
+    <h3>Diseño y Desarrollo de Servicios Web - caso</h3>
     <p>GA7-220501096-AA5-EV01</p>
+
+    <a href="logout.php">Cerrar sesión</a>
 </div>
 </body>
 </html>

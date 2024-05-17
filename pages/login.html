@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <link rel="stylesheet" href="../assets/login.css">
+</head>
+<body>
+<div class="container" id="container">
+    <div class="form-container sign-in-container">
+        <form id="loginForm">
+            <h1>Iniciar sesión</h1>
+            <p id="messageError" class="error" style="display: none;"></p>
+            <input type="text" id="user" name="user" placeholder="Usuario" required />
+            <input type="password" id="password" name="password" placeholder="Contraseña" required><br><br>
+            <a href="#">¿Olvidó su contraseña?</a>
+            <button type="submit">Iniciar sesión</button>
+        </form>
+    </div>
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-right">
+                <h1>Hola, Amigo!</h1>
+                <p>Si aún no tienes cuenta por favor ingresa desde aquí para registrarte</p>
+                <a href="register.html" class="button" type="button">Registrarse</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evitar el envío del formulario de la manera tradicional
+
+        var user = document.getElementById('user').value;
+        var password = document.getElementById('password').value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'login.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    alert(response.success);
+                    window.location.href = 'home.php'; // Redirigir a la página de bienvenida si el inicio de sesión es exitoso
+                } else {
+                    var messageError = document.getElementById('messageError');
+                    messageError.style.display = 'block';
+                    messageError.textContent = response.error;
+                }
+            }
+        };
+
+        var data = JSON.stringify({
+            "user": user,
+            "password": password
+        });
+
+        xhr.send(data);
+    });
+</script>
+
+</body>
+</html>
