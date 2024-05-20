@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
     <link rel="stylesheet" href="../assets/login.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
 <body>
 <div class="container" id="container">
@@ -20,20 +21,17 @@
     <div class="form-container sign-in-container">
         <form id="registerForm">
             <h1>Registro</h1>
-
-            <p id="messageError" class="error" style="display: none;"></p>
-            <p id="messageSuccess" class="success" style="display: none;"></p>
-
-            <input type="text" id="name" name="name" placeholder="Nombres" required />
-            <input type="text" id="last_name" name="last_name" placeholder="Apellidos" required />
-            <input type="text" id="user" name="user" placeholder="Usuario" required />
-            <input type="password" id="password" name="password" placeholder="Contraseña" required />
-            <input type="password" id="confirm_password" name="confirm_password" placeholder="Repetir Contraseña" required />
+            <input type="text" id="name" name="name" placeholder="Nombres"/>
+            <input type="text" id="last_name" name="last_name" placeholder="Apellidos"/>
+            <input type="text" id="user" name="user" placeholder="Usuario"/>
+            <input type="password" id="password" name="password" placeholder="Contraseña"/>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Repetir Contraseña"/>
             <button type="submit">Registrarse</button>
         </form>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
     document.getElementById('registerForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Evitar el envío del formulario de la manera tradicional
@@ -44,6 +42,31 @@
         var password = document.getElementById('password').value;
         var confirm_password = document.getElementById('confirm_password').value;
 
+        // Verificar si los campos están vacíos
+        if (!name || !last_name || !user || !password ) {
+            Toastify({
+                text: "Por favor complete todos los campos.",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#f44336",
+            }).showToast();
+            return;
+        }
+
+        if (password !== confirm_password) {
+            Toastify({
+                text: "Las contraseñas no coinciden.",
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#f44336",
+            }).showToast();
+            return;
+        }
+
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'register.php', true);
         xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
@@ -51,17 +74,25 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
-                var messageError = document.getElementById('messageError');
-                var messageSuccess = document.getElementById('messageSuccess');
 
                 if (response.success) {
-                    messageError.style.display = 'none';
-                    messageSuccess.style.display = 'block';
-                    messageSuccess.textContent = response.success;
+                    Toastify({
+                        text: response.success,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#4caf50",
+                    }).showToast();
                 } else {
-                    messageSuccess.style.display = 'none';
-                    messageError.style.display = 'block';
-                    messageError.textContent = response.error;
+                    Toastify({
+                        text: response.error,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#f44336",
+                    }).showToast();
                 }
             }
         };
